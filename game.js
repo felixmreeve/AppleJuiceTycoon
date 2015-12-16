@@ -65,8 +65,8 @@ function init()
 	def_juice_speed = ~~(def_juice_speed*3)/10;
 	for (var i = 0; i < KEY_NUM; i++)
 		employees[i] = { name:"Default", state:DEAD, used:false, level:1, training:0, buy_level:1, buy_skill:0, sell_level:1, sell_skill:0, juice_level:1, juice_skill:0, apple:false, can_drink:false,
-		                 hunger:0, max_hunger:def_max_hunger, hunger_down:def_hunger_down, hunger_up:def_hunger_up,
-		                 thirst:0, max_thirst:def_max_thirst, thirst_down:def_thirst_down, thirst_up:def_thirst_up,
+		                 hunger:0, max_hunger:def_max_hunger, hunger_up:def_hunger_up,
+		                 thirst:0, max_thirst:def_max_thirst, thirst_up:def_thirst_up,
 		                 juice_speed:def_juice_speed, juice_num:1,
 		            	 buy_speed:def_buy_speed, buy_num:1, apple_val:def_apple_val,
 		            	 sell_speed:def_sell_speed, sell_num:1, juice_val:def_juice_val,
@@ -423,16 +423,6 @@ function juiceUp(_key)
 
 function levelUp(_key)
 {
-	/*
-	employees[i] = { name:"Default", state:DEAD, level:0, training:0, apple:false,
-                     hunger:0, max_hunger:def_max_hunger, hunger_down:def_hunger_down, hunger_up:def_hunger_up,
-                     thirst:0, max_thirst:def_max_thirst, thirst_down:def_thirst_down, thirst_up:def_thirst_up,
-                     juice_speed:def_juice_speed,
-            	     buy_speed:def_buy_speed, apple_val:def_apple_val,
-                     sell_speed:def_sell_speed, juice_val:def_juice_val,
-            	     training_cost:def_training_cost,
-            	     sprite:def_sprite, pos_x:50, pos_y:100 };
-	*/
 	employees[_key].level++;
 	announce("" + employees[_key].name + " has leveled up.");
 	announce("(thirst and hunger improved)");
@@ -480,8 +470,8 @@ function feed()
 	if (selection && employees[selection].state != DEAD){
 		if (apples > 0){
 			apples--;
-			employees[selection].state = FEEDING;
-			announce("" + employees[selection].name + " is eating an apple.");
+			announce("" + employees[selection].name + " eats an apple.");
+			employees[selection].hunger = 0;
 		}
 		else announce("There is no food to eat.");
 	}
@@ -492,8 +482,9 @@ function drink()
 	var selection = getEmployee(KEY_D);
 	if (selection && employees[selection].state != DEAD){
 		if (juice_boxes > 0){
-			employees[selection].state = DRINKING;
-			announce("" + employees[selection].name + " is drinking some juice.");
+			juice_boxes--;
+			announce("" + employees[selection].name + " drinks a juice box.");
+			employees[selection].thirst = 0;
 		}
 		else announce("There is no juice to drink.");
 	}
